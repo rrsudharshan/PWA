@@ -152,6 +152,8 @@ function updateSubscriptionOnServer(subscription) {
         subscriptionDetails.classList.add('is-invisible');
     }
 }
+
+
 function unsubscribeUser() {
     swRegistration.pushManager.getSubscription()
         .then(function(subscription) {

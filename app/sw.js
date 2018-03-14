@@ -17,6 +17,7 @@
 *
 */
 
+
 /* eslint-env browser, serviceworker, es6 */
 self.addEventListener('notificationclick', function(event) {
     console.log('[Service Worker] Notification click Received.');
@@ -42,5 +43,18 @@ self.addEventListener('push', function(event) {
 
     event.waitUntil(self.registration.showNotification(title, options));
 });
-
+self.addEventListener('activate', function(e) {
+    console.log('[ServiceWorker] Activate');
+    e.waitUntil(
+        caches.keys().then(function(keyList) {
+            return Promise.all(keyList.map(function(key) {
+                if (key !== cacheName) {
+                    console.log('[ServiceWorker] Removing old cache', key);
+                    return caches.delete(key);
+                }
+            }));
+        })
+    );
+    return self.clients.claim();
+});
 
